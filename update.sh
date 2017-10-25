@@ -11,7 +11,7 @@ yarn
 echo "----- Migrating Database -----"
 python manage.py migrate --noinput
 
-#if [ -n "${APP_IS_ON_DOCKER_IN_CLOUD}" ]; then
-#  echo "----- Building Static Assets -----"
-#  gulp build
-#fi
+if [ -n "${APP_IS_ON_DOCKER_IN_CLOUD}" ]; then
+  echo "----- Building Static Assets -----"
+  gulp build
+fi

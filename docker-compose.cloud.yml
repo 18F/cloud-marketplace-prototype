@@ -1,0 +1,16 @@
+version: '2'
+services:
+  app: &app
+    build:
+      dockerfile: Dockerfile.cloud
+    volumes:
+      - css:/cmp/marketplace/static/marketplace/css/
+      - vendor-uswds:/cmp/marketplace/static/marketplace/vendor/uswds/
+    environment:
+      # Feel free to change this value, or add new environment variables.
+      - DEBUG=yup
+      # Do not change the following value.
+      - APP_IS_ON_DOCKER_IN_CLOUD=yup
+volumes:
+  css:
+  vendor-uswds:

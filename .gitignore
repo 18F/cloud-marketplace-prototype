@@ -3,6 +3,7 @@ docker-compose.override.yml
 *.log
 *.pyc
 __pycache__
+Dockerfile.cloud
 
 marketplace/static/marketplace/css
 marketplace/static/marketplace/vendor/uswds

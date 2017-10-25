@@ -1,0 +1,19 @@
+{
+  "name": "cloud-marketplace-prototype",
+  "version": "1.0.0",
+  "description": "Cloud marketplace prototype.",
+  "scripts": {
+    "start": "gulp watch",
+    "build": "gulp",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Atul Varma <atul.varma@gsa.gov>",
+  "license": "CC0-1.0",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-sass": "^3.1.0",
+    "gulp-sourcemaps": "^2.6.0",
+    "gulp-util": "^3.0.8",
+    "uswds": "1.4.1"
+  }
+}

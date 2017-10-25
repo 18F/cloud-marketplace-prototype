@@ -2,13 +2,13 @@
 
 set -e
 
-# Note that much of the following will eventually be uncommented.
-
-#echo "----- Updating Python Dependencies -----"
-#python -m pip install -r requirements-dev.txt
+echo "----- Updating Python Dependencies -----"
+python -m pip install -r requirements-dev.txt
 
 echo "----- Updating Node Dependencies -----"
 yarn
+
+# Note that much of the following will eventually be uncommented.
 
 #echo "----- Migrating Database -----"
 #python manage.py migrate --noinput

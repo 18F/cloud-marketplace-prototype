@@ -31,4 +31,6 @@ gulp.task('watch', ['sass', 'copy-uswds-assets'], () => {
   gulp.watch('./sass/**/*.scss', ['sass']);
 });
 
-gulp.task('default', ['sass', 'copy-uswds-assets']);
+gulp.task('build', ['sass', 'copy-uswds-assets']);
+
+gulp.task('default', ['build']);

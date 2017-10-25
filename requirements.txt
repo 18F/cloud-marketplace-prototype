@@ -6,3 +6,6 @@ gunicorn==19.6.0
 psycopg2==2.6.2
 Jinja2==2.9.6
 whitenoise==3.3.1
+
+# https://github.com/18F/cg-django-uaa/pull/42
+git+git://github.com/18F/cg-django-uaa@d96d9e6b5a2b5ea34f00fef1fd3812c86319b373

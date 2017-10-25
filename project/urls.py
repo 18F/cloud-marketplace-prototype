@@ -14,10 +14,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from .decorators import staff_login_required
+
 import marketplace.views
+
+admin.site.login = staff_login_required(admin.site.login)
 
 urlpatterns = [
     path('', marketplace.views.home, name='home'),
+    path('logout', marketplace.views.logout, name='logout'),
+    path('auth/', include('uaa_client.urls')),
     path('admin/', admin.site.urls),
 ]

@@ -37,6 +37,8 @@ if DEBUG:
     )
     os.environ.setdefault('DEFAULT_FROM_EMAIL', 'noreply@localhost')
     os.environ.setdefault('SERVER_EMAIL', 'system@localhost')
+    os.environ.setdefault('UAA_CLIENT_ID', 'fake-client-id')
+    os.environ.setdefault('UAA_CLIENT_SECRET', 'fake-client-secret')
 
 email_config = dj_email_url.config()
 # Sets a number of settings values, as described at
@@ -60,6 +62,7 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'marketplace',
+    'uaa_client',
 ]
 
 MIDDLEWARE = [
@@ -69,6 +72,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'uaa_client.middleware.UaaRefreshMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -135,3 +139,26 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+LOGIN_URL = 'uaa_client:login'
+
+UAA_APPROVED_DOMAINS = [
+    'gsa.gov',
+]
+
+AUTHENTICATION_BACKENDS = [
+    'uaa_client.authentication.UaaBackend',
+]
+
+UAA_AUTH_URL = 'https://login.fr.cloud.gov/oauth/authorize'
+
+UAA_TOKEN_URL = 'https://uaa.fr.cloud.gov/oauth/token'
+
+if DEBUG:
+    UAA_AUTH_URL = UAA_TOKEN_URL = 'fake:'
+
+UAA_CLIENT_ID = os.environ['UAA_CLIENT_ID']
+
+UAA_CLIENT_SECRET = os.environ['UAA_CLIENT_SECRET']
+
+LOGIN_REDIRECT_URL = '/'

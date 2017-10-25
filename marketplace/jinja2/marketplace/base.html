@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{{ static('marketplace/css/main.css') }}">
+    <title>{% block title %}{% endblock %}</title>
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    <a class="usa-skipnav" href="#main-content">Skip to main content</a>
+    <header class="usa-header usa-header-extended" role="banner">
+      <!-- Gov banner BEGIN -->
+      <div class="usa-banner">
+        <div class="usa-accordion">
+          <header class="usa-banner-header">
+            <div class="usa-grid usa-banner-inner">
+            <img src="{{ static('marketplace/vendor/uswds/img/favicons/favicon-57.png') }}" alt="U.S. flag">
+            <p>An official website of the United States government</p>
+            </div>
+          </header>
+        </div>
+      </div>
+      <!-- Gov banner END -->
+      <div class="usa-navbar">
+        <button class="usa-menu-btn">Menu</button>
+        <div class="usa-logo" id="logo">
+          <em class="usa-logo-text">
+            <a href="{{ url('home') }}" title="Home" aria-label="apps.gov Home">apps.gov</a>
+          </em>
+        </div>
+      </div>
+      <nav role="navigation" class="usa-nav">
+        <div class="usa-nav-inner">
+          <button class="usa-nav-close">
+            <img src="{{ static('marketplace/vendor/uswds/img/close.svg') }}" alt="close">
+          </button>
+          <ul class="usa-nav-primary usa-accordion">
+            <li>
+              <a class="usa-nav-link" href="#">
+                <span>How it works</span>
+              </a>
+            </li>
+            <li>
+              <button class="
+              usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="side-nav-1">
+                <span>Products</span>
+              </button>
+              <ul id="side-nav-1" class="usa-nav-submenu">
+                <li>
+                  <a href="#">Favro</a>
+                </li>
+                <li>
+                  <a href="#">Mural</a>
+                </li>
+                <li>
+                  <a href="#">Trello</a>
+                </li>
+                <li>
+                  <a href="#">Zoom</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a class="usa-nav-link" href="#">
+                <span>Usage</span>
+              </a>
+            </li>
+            {% if request.user.is_authenticated %}
+            <li>
+              <a class="usa-nav-link" href="#">
+                <span>Manage licenses</span>
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+          <div class="usa-nav-secondary">
+            <ul class="usa-unstyled-list usa-nav-secondary-links">
+            {% if request.user.is_authenticated %}
+              <li>
+                Hello, {{ request.user.email }}
+              </li>
+              {% if request.user.is_staff %}
+                <li>
+                  <a href="{{ url('admin:index') }}">Site administration</a>
+                </li>
+              {% endif %}
+              <li>
+                <a href="{{ url('logout') }}">Logout</a>
+              </li>
+            {% else %}
+              <li>
+                <a href="{{ url('uaa_client:login') }}">Login</a>
+              </li>
+            {% endif %}
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <div class="usa-overlay"></div>
+    <main id="main-content">
+    {% block main_content %}
+      <section class="usa-grid usa-section">
+        {% block simple_content %}{% endblock %}
+      </section>
+    {% endblock %}
+    </main>
+    <footer class="usa-footer usa-footer-medium" role="contentinfo">
+      <div class="usa-grid usa-footer-return-to-top">
+        <a href="#">Return to top</a>
+      </div>
+      <div class="usa-footer-secondary_section">
+        <div class="usa-grid">
+          [footer]
+        </div>
+      </div>
+    </footer>
+    <script src="{{ static('marketplace/vendor/uswds/js/uswds.min.js') }}"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

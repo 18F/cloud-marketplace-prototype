@@ -1,0 +1,23 @@
+version: '2'
+services:
+  app:
+    extends:
+      file: docker-services.yml
+      service: base_app
+    links:
+      - db
+    command: sh -c "python manage.py collectstatic --noinput ; gunicorn -b :${DOCKER_EXPOSED_PORT} hourglass.wsgi:application"
+    ports:
+      - "${DOCKER_EXPOSED_PORT}:${DOCKER_EXPOSED_PORT}"
+  db:
+    image: postgres:9.5.4
+    volumes:
+      - pgdata:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=cmp
+      - POSTGRES_USER=cmp_user
+volumes:
+  node-modules:
+  python-venv:
+  home:
+  pgdata:

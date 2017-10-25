@@ -8,10 +8,11 @@ const sourcemaps = require('gulp-sourcemaps');
 
 const USWDS_DIST = 'node_modules/uswds/dist';
 const USWDS_DIST_DIR = path.join(__dirname, ...USWDS_DIST.split('/'));
+const STATIC_DIR = './marketplace/static/marketplace';
 
 gulp.task('copy-uswds-assets', () => {
   return gulp.src(`${USWDS_DIST}/@(js|fonts|img)/**/**`)
-  .pipe(gulp.dest('./vendor/uswds'));
+  .pipe(gulp.dest(`${STATIC_DIR}/vendor/uswds`));
 });
 
 gulp.task('sass', () => {
@@ -23,10 +24,10 @@ gulp.task('sass', () => {
       ]
     }).on('error', sass.logError))
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest('./css'));
+    .pipe(gulp.dest(`${STATIC_DIR}/css`));
 });
 
-gulp.task('watch', ['sass'], () => {
+gulp.task('watch', ['sass', 'copy-uswds-assets'], () => {
   gulp.watch('./sass/**/*.scss', ['sass']);
 });
 

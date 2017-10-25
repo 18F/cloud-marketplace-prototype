@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'marketplace',
 ]
 
 MIDDLEWARE = [
@@ -86,6 +87,13 @@ TEMPLATES = [
             ],
         },
     },
+    {
+        'BACKEND': 'django.template.backends.jinja2.Jinja2',
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'environment': 'project.jinja2.environment',
+        }
+    }
 ]
 
 WSGI_APPLICATION = 'project.wsgi.application'

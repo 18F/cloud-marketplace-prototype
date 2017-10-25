@@ -4,4 +4,5 @@ docker-compose.override.yml
 *.pyc
 __pycache__
 
-main.css
+marketplace/static/marketplace/css
+marketplace/static/marketplace/vendor/uswds

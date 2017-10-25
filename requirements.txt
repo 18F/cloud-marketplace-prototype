@@ -4,3 +4,4 @@ dj-email-url==0.0.10
 python-dotenv==0.6.3
 gunicorn==19.6.0
 psycopg2==2.6.2
+Jinja2==2.9.6

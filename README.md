@@ -10,6 +10,12 @@ ln -sf docker-compose.local.yml docker-compose.override.yml
 ./docker-update.sh
 ```
 
+Then initialize the database:
+
+```
+python manage.py migrate
+```
+
 To access the main app container, run:
 
 ```

@@ -1,5 +1,7 @@
 .env
 docker-compose.override.yml
 *.log
+*.pyc
+__pycache__
 
 main.css

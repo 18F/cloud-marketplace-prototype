@@ -2,6 +2,7 @@ import abc
 from django.conf import settings
 from django.utils.module_loading import import_string
 from django.contrib.staticfiles.storage import staticfiles_storage
+from django.urls import reverse
 
 
 def get_all():
@@ -30,6 +31,11 @@ class Product(metaclass=abc.ABCMeta):
     def primary_screenshot(self):
         return staticfiles_storage.url(
             f"marketplace/products/{self.slug}/primary_screenshot.png")
+
+
+    @property
+    def detail_url(self):
+        return reverse('product_detail', kwargs={'product': self})
 
 
 class Favro(Product):

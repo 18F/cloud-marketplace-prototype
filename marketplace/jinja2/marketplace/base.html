@@ -48,7 +48,7 @@
               <ul id="side-nav-1" class="usa-nav-submenu">
               {% for product in ALL_PRODUCTS %}
                 <li>
-                  <a href="#">{{ product.name }}</a>
+                  <a href="{{ product.detail_url }}">{{ product.name }}</a>
                 </li>
               {% endfor %}
               </ul>

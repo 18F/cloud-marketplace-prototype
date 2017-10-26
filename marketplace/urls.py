@@ -7,5 +7,6 @@ register_converter(converters.ProductConverter, 'product')
 urlpatterns = [
     path('', views.home, name='home'),
     path('logout', views.logout, name='logout'),
-    path('products/<product:product>/', views.product_detail, name='product'),
+    path('products/<product:product>/', views.product_detail,
+         name='product_detail'),
 ]

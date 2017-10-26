@@ -10,4 +10,6 @@ def logout(request):
     return render(request, 'marketplace/logged_out.html')
 
 def product_detail(request, product):
-    raise NotImplementedError(f"TODO: Implement page for {product.name}!")
+    return render(request, 'marketplace/product_detail.html', {
+        'product': product,
+    })

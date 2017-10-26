@@ -1,0 +1,19 @@
+{% extends "marketplace/base.html" %}
+
+{% block title %}{{ product.name }} - apps.gov{% endblock %}
+
+{% block main_content %}
+  <section class="usa-grid usa-section">
+    <div class="usa-grid" style="padding-bottom: 2em">
+      <div class="usa-width-one-third">
+        <p><img src="{{ product.icon }}" alt="" width="64" height="64"></p>
+      </div>
+      <div class="usa-width-two-thirds">
+        <h2>{{ product.name }}</h2>
+        <p style="color: gray">{{ product.category }}</p>
+        <p>{{ product.description }}</p>
+        <p><img src="{{ product.primary_screenshot }}" alt=""></p>
+      </div>
+    </div>
+  </section>
+{% endblock %}

@@ -24,7 +24,7 @@
           <p style="color: gray">{{ product.category }}</p>
           <p>{{ product.description }}</p>
           <p><img src="{{ product.primary_screenshot }}" alt=""></p>
-          <a class="usa-button usa-button-secondary">Get {{ product.name }}</a>
+          <a class="usa-button usa-button-secondary" href="{{ product.detail_url }}">Get {{ product.name }}</a>
         </div>
       </div>
     {% endfor %}

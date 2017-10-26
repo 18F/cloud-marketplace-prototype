@@ -1,6 +1,7 @@
 import abc
 from django.conf import settings
 from django.utils.module_loading import import_string
+from django.contrib.staticfiles.storage import staticfiles_storage
 
 
 def get_all():
@@ -15,12 +16,25 @@ class Product(metaclass=abc.ABCMeta):
     # Subclasses must define these.
     slug = None
     name = None
+    category = None
     description = None
+
+    @property
+    def icon(self):
+        return staticfiles_storage.url(
+            f"marketplace/products/{self.slug}/icon.png")
+
+
+    @property
+    def primary_screenshot(self):
+        return staticfiles_storage.url(
+            f"marketplace/products/{self.slug}/primary_screenshot.png")
 
 
 class Favro(Product):
     slug = 'favro'
     name = 'Favro'
+    category = "Project management"
 
     description = """
         Favro is a planning and collaboration app which enables
@@ -32,6 +46,7 @@ class Favro(Product):
 class Mural(Product):
     slug = 'mural'
     name = 'Mural'
+    category = "Live collaboration"
 
     description = """
         A web-based solution for small teams that need a virtual
@@ -42,6 +57,7 @@ class Mural(Product):
 class Trello(Product):
     slug = 'trello'
     name = 'Trello'
+    category = "Project management"
 
     description = """
         This is a card-based tool for managing projects and tasks.
@@ -53,6 +69,7 @@ class Trello(Product):
 class Zoom(Product):
     slug = 'zoom'
     name = 'Zoom'
+    category = "Video conferencing"
 
     description = """
         This is a video conferencing tool with features such as chat,

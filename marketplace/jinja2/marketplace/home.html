@@ -14,9 +14,19 @@
   </section>
   <section class="usa-grid usa-section">
     <h2>Products</h2>
-    <ul>
     {% for product in ALL_PRODUCTS %}
-      <li>{{ product.name }}</li>
+      <div class="usa-grid" style="padding-bottom: 2em">
+        <div class="usa-width-one-third">
+          <p><img src="{{ product.icon }}" alt="" width="64" height="64"></p>
+        </div>
+        <div class="usa-width-two-thirds">
+          <h3>{{ product.name }}</h3>
+          <p><span>{{ product.category }}</span></p>
+          <p>{{ product.description }}</p>
+          <p><img src="{{ product.primary_screenshot }}" alt=""></p>
+          <a class="usa-button usa-button-secondary">Get {{ product.name }}</a>
+        </div>
+      </div>
     {% endfor %}
     </ul>
   </section>

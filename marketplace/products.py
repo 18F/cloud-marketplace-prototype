@@ -5,6 +5,7 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 
 
 def get_all():
+    # TODO: Consider caching the return value.
     instances = []
     for classname in settings.MARKETPLACE_PRODUCTS:
         cls = import_string(classname)

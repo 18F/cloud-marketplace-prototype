@@ -8,3 +8,6 @@ def home(request):
 def logout(request):
     django.contrib.auth.logout(request)
     return render(request, 'marketplace/logged_out.html')
+
+def product_detail(request, product):
+    raise NotImplementedError(f"TODO: Implement page for {product.name}!")

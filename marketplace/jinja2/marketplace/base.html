@@ -46,18 +46,11 @@
                 <span>Products</span>
               </button>
               <ul id="side-nav-1" class="usa-nav-submenu">
+              {% for product in ALL_PRODUCTS %}
                 <li>
-                  <a href="#">Favro</a>
+                  <a href="#">{{ product.name }}</a>
                 </li>
-                <li>
-                  <a href="#">Mural</a>
-                </li>
-                <li>
-                  <a href="#">Trello</a>
-                </li>
-                <li>
-                  <a href="#">Zoom</a>
-                </li>
+              {% endfor %}
               </ul>
             </li>
             <li>

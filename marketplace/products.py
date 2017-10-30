@@ -80,6 +80,6 @@ class Zoom(Product):
 
     description = """
         This is a video conferencing tool with features such as chat,
-        screeen sharing, and session recording. No account is required
+        screen sharing, and session recording. No account is required
         to participate in conferences.
     """

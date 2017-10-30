@@ -5,6 +5,8 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import reverse
 
 
+MAX_SLUG_LENGTH = 50
+
 def get_all():
     # TODO: Consider caching the return value.
     instances = []
@@ -12,6 +14,13 @@ def get_all():
         cls = import_string(classname)
         instances.append(cls())
     return instances
+
+
+def get_all_choices():
+    return [
+        (product.slug, product.name)
+        for product in get_all()
+    ]
 
 
 class Product(metaclass=abc.ABCMeta):

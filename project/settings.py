@@ -162,10 +162,3 @@ UAA_CLIENT_ID = os.environ['UAA_CLIENT_ID']
 UAA_CLIENT_SECRET = os.environ['UAA_CLIENT_SECRET']
 
 LOGIN_REDIRECT_URL = '/'
-
-MARKETPLACE_PRODUCTS = [
-    'marketplace.products.Favro',
-    'marketplace.products.Mural',
-    'marketplace.products.Trello',
-    'marketplace.products.Zoom',
-]

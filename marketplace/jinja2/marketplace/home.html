@@ -14,7 +14,7 @@
   </section>
   <section class="usa-grid usa-section">
     <h2 id="products">Products</h2>
-    {% for product in ALL_PRODUCTS %}
+    {% for product in Product.objects.all() %}
       <div class="usa-grid" style="padding-bottom: 2em">
         <div class="usa-width-one-third">
           <p><img src="{{ product.icon }}" alt="" width="64" height="64"></p>

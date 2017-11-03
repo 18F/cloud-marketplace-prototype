@@ -46,7 +46,7 @@
                 <span>Products</span>
               </button>
               <ul id="side-nav-1" class="usa-nav-submenu">
-              {% for product in ALL_PRODUCTS %}
+              {% for product in Product.objects.all() %}
                 <li>
                   <a href="{{ product.detail_url }}">{{ product.name }}</a>
                 </li>

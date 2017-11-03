@@ -8,6 +8,7 @@ Install [Docker][], then run:
 cp .env.sample .env
 ln -sf docker-compose.local.yml docker-compose.override.yml
 ./docker-update.sh
+docker-compose run app python manage.py create_initial_products
 ```
 
 Then start everything up:

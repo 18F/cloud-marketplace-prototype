@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-
-from . import products
+from django.contrib.staticfiles.storage import staticfiles_storage
+from django.urls import reverse
 
 
 class Team(models.Model):
@@ -16,6 +16,36 @@ class Team(models.Model):
     users = models.ManyToManyField(User)
 
 
+class Product(models.Model):
+    """
+    Represents a software product in the marketplace.
+    """
+
+    name = models.CharField(max_length=100)
+
+    slug = models.SlugField(max_length=100)
+
+    category = models.CharField(max_length=100)
+
+    description = models.TextField()
+
+    teams_approved_for = models.ManyToManyField(Team)
+
+    @property
+    def icon(self):
+        return staticfiles_storage.url(
+            f"marketplace/products/{self.slug}/icon.png")
+
+    @property
+    def primary_screenshot(self):
+        return staticfiles_storage.url(
+            f"marketplace/products/{self.slug}/primary_screenshot.png")
+
+    @property
+    def detail_url(self):
+        return reverse('product_detail', kwargs={'product': self})
+
+
 class LicenseType(models.Model):
     """
     Represents a type of license for a product, e.g.
@@ -26,27 +56,7 @@ class LicenseType(models.Model):
         max_length=50,
     )
 
-    product = models.CharField(
-        db_index=True,
-        choices=products.get_all_choices(),
-        max_length=products.MAX_SLUG_LENGTH,
-    )
-
-
-class ProductApproval(models.Model):
-    """
-    Represents an approval that a team has for a
-    given product.
-    """
-
-    product = models.CharField(
-        db_index=True,
-        choices=products.get_all_choices(),
-        max_length=products.MAX_SLUG_LENGTH,
-        unique=True,
-    )
-
-    teams = models.ManyToManyField(Team)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
 
 class Purchase(models.Model):

@@ -2,7 +2,7 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import reverse
 from jinja2 import Environment
 
-from marketplace import products
+from marketplace.models import Product
 
 
 def environment(**options):
@@ -10,6 +10,6 @@ def environment(**options):
     env.globals.update({
         'static': staticfiles_storage.url,
         'url': reverse,
-        'ALL_PRODUCTS': products.get_all(),
+        'Product': Product,
     })
     return env

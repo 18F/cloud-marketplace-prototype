@@ -38,3 +38,63 @@ class TeamFactory(Factory):
     name = factory.LazyAttribute(
         lambda a: f"GSA {simple_job()}s"
     )
+
+
+class BaseProductFactory(Factory):
+    class Meta:
+        model = models.Product
+
+
+class FavroFactory(BaseProductFactory):
+    slug = 'favro'
+
+    name = 'Favro'
+
+    category = "Project management"
+
+    description = """
+        Favro is a planning and collaboration app which enables
+        developers, designers, and clients to all stay on the same
+        page and track progress.
+    """
+
+
+class MuralFactory(BaseProductFactory):
+    slug = 'mural'
+
+    name = 'Mural'
+
+    category = "Live collaboration"
+
+    description = """
+        A web-based solution for small teams that need a virtual
+        workspace in which they can brainstorm, plan and collaborate.
+    """
+
+
+class TrelloFactory(BaseProductFactory):
+    slug = 'trello'
+
+    name = 'Trello'
+
+    category = "Project management"
+
+    description = """
+        This is a card-based tool for managing projects and tasks.
+        It uses customizable Kanban-style boards, and offers
+        "power ups" such as GitHub integration.
+    """
+
+
+class ZoomFactory(BaseProductFactory):
+    slug = 'zoom'
+
+    name = 'Zoom'
+
+    category = "Video conferencing"
+
+    description = """
+        This is a video conferencing tool with features such as chat,
+        screen sharing, and session recording. No account is required
+        to participate in conferences.
+    """

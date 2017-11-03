@@ -39,6 +39,16 @@ This will run an interactive bash session inside the main app
 container. In this container, the `/cmp` directory is mapped to
 the root of the repository on your host.
 
+## Running tests
+
+We use [pytest-django][] for tests. To run them, use:
+
+```
+docker-compose run app pytest
+```
+
+[pytest-django]: https://pytest-django.readthedocs.io/en/latest/
+
 ## A note about manage.py
 
 `manage.py` automatically attempts to run itself inside the app container if

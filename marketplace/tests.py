@@ -1,14 +1,14 @@
 from io import StringIO
-from django.test import TestCase
+import pytest
 from django.core.management import call_command
 
 
-class ManagementCommandTests(TestCase):
-    def test_create_initial_products_works(self):
-        out = StringIO()
-        call_command('create_initial_products', stdout=out)
-        self.assertIn('Created Favro.', out.getvalue())
+@pytest.mark.django_db
+def test_create_initial_products_works():
+    out = StringIO()
+    call_command('create_initial_products', stdout=out)
+    assert 'Created Favro.' in out.getvalue()
 
-        out = StringIO()
-        call_command('create_initial_products', stdout=out)
-        self.assertIn('Favro already exists.', out.getvalue())
+    out = StringIO()
+    call_command('create_initial_products', stdout=out)
+    assert 'Favro already exists.' in out.getvalue()

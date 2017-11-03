@@ -1,6 +1,12 @@
 from django.contrib import admin
 
-from .models import Product, Team, LicenseType
+from .models import Product, Team, LicenseType, Purchase
+
+
+@admin.register(Purchase)
+class PurchaseAdmin(admin.ModelAdmin):
+    list_display = ('license_type', 'license_count', 'start_date',
+                    'end_date')
 
 
 class LicenseTypeInline(admin.TabularInline):

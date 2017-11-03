@@ -2,3 +2,4 @@
 -r requirements.txt
 
 pytest-django==3.1.2
+factory_boy==2.9.2

@@ -43,6 +43,7 @@ class TeamFactory(Factory):
 class BaseProductFactory(Factory):
     class Meta:
         model = models.Product
+        abstract = True
 
 
 class FavroFactory(BaseProductFactory):

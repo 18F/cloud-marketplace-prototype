@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from .models import Product, Team, LicenseType, Purchase
+from .models import (Product, Team, LicenseType, Purchase,
+                     LicenseRequest)
 
 
 @admin.register(Purchase)
@@ -23,3 +24,9 @@ class ProductAdmin(admin.ModelAdmin):
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(LicenseRequest)
+class LicenseRequestAdmin(admin.ModelAdmin):
+    list_display = ('license_type', 'user', 'created_at', 'updated_at',
+                    'status', 'is_self_reported')

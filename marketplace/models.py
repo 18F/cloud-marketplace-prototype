@@ -64,6 +64,9 @@ class LicenseType(models.Model):
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.name
+
 
 class Purchase(models.Model):
     """

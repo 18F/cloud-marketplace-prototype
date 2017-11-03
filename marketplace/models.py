@@ -15,6 +15,9 @@ class Team(models.Model):
 
     users = models.ManyToManyField(User)
 
+    def __str__(self):
+        return self.name
+
 
 class Product(models.Model):
     """
@@ -44,6 +47,9 @@ class Product(models.Model):
     @property
     def detail_url(self):
         return reverse('product_detail', kwargs={'product': self})
+
+    def __str__(self):
+        return self.name
 
 
 class LicenseType(models.Model):

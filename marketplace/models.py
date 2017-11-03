@@ -4,6 +4,76 @@ from django.contrib.auth.models import User
 from . import products
 
 
+class Team(models.Model):
+    """
+    Represents a team of people. This is a fairly abstract
+    concept and can represent anything from an entire
+    government agency to a small team within an agency.
+    """
+
+    name = models.CharField(max_length=100)
+
+    users = models.ManyToManyField(User)
+
+
+class LicenseType(models.Model):
+    """
+    Represents a type of license for a product, e.g.
+    "Free", "Enterprise", "Pro", etc.
+    """
+
+    name = models.CharField(
+        max_length=50,
+    )
+
+    product = models.CharField(
+        db_index=True,
+        choices=products.get_all_choices(),
+        max_length=products.MAX_SLUG_LENGTH,
+    )
+
+
+class ProductApproval(models.Model):
+    """
+    Represents an approval that a team has for a
+    given product.
+    """
+
+    product = models.CharField(
+        db_index=True,
+        choices=products.get_all_choices(),
+        max_length=products.MAX_SLUG_LENGTH,
+        unique=True,
+    )
+
+    teams = models.ManyToManyField(Team)
+
+
+class Purchase(models.Model):
+    """
+    Represents a purchase of licenses that have been made for a
+    product.
+    """
+
+    # Open questions:
+    #
+    # * What happens when a purchase event's end date is reached?
+    #   how do we decide what users lose their licenses, if any?
+    #   Or do we simply email an administrator and tell them that
+    #   they need to relinquish the licenses for a certain number
+    #   of users?
+
+    license_type = models.ForeignKey(LicenseType, on_delete=models.CASCADE)
+
+    license_count = models.IntegerField()
+
+    start_date = models.DateField()
+
+    end_date = models.DateField()
+
+    teams = models.ManyToManyField(Team)
+
+
 class LicenseRequest(models.Model):
     """
     Represents a request that a user has made for a product license.
@@ -26,7 +96,7 @@ class LicenseRequest(models.Model):
 
         # The user once had a license for the product,
         # but no longer has it.
-        ('retired', 'Retired'),
+        ('relinquished', 'Relinquished'),
     ]
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -35,14 +105,16 @@ class LicenseRequest(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    product = models.CharField(
-        db_index=True,
-        choices=products.get_all_choices(),
-        max_length=products.MAX_SLUG_LENGTH,
-    )
+    license_type = models.ForeignKey(LicenseType, on_delete=models.CASCADE)
 
     status = models.CharField(
         db_index=True,
         choices=STATUS_CHOICES,
         max_length=50,
+    )
+
+    is_self_reported = models.BooleanField(
+        default=False,
+        help_text=("The user has self-reported that they have "
+                   "a license for this product."),
     )

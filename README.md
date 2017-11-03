@@ -8,7 +8,15 @@ Install [Docker][], then run:
 cp .env.sample .env
 ln -sf docker-compose.local.yml docker-compose.override.yml
 ./docker-update.sh
+
 docker-compose run app python manage.py create_initial_products
+```
+
+You may also want to create a superuser so you can access
+administrative functionality on the site:
+
+```
+docker-compose run app python manage.py createsuperuser
 ```
 
 Then start everything up:

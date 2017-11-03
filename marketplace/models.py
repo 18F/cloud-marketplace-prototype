@@ -103,6 +103,9 @@ class LicenseRequest(models.Model):
         # now needs to be addressed by an administrator or staff member.
         ('requested', 'Requested'),
 
+        # The user was granted a license for the product.
+        ('granted', 'Granted'),
+
         # The user was denied a license for the product,
         # because they do not meet some qualification
         # for having one.

@@ -116,6 +116,15 @@ class ProductFactory(BaseProductFactory):
 
     description = factory.Faker('paragraph')
 
+    @factory.post_generation
+    def licenses(self, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if extracted:
+            for license in extracted:
+                self.license_types.add(license)
+
 
 class LicenseTypeFactory(Factory):
     class Meta:

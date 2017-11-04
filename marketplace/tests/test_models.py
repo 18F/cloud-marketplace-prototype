@@ -21,7 +21,9 @@ def test_license_type_str():
 
 # TODO: We can probably delete this test eventually, right now
 # I just want to make sure the factory I've added actually works.
+@pytest.mark.django_db
 def test_license_type_factory_works():
-    lt = LicenseTypeFactory.build()
+    lt = LicenseTypeFactory.create()
     assert lt.name
     assert lt.product.name
+    assert list(lt.product.license_types.all()) == [lt]

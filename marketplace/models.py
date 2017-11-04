@@ -62,7 +62,11 @@ class LicenseType(models.Model):
         max_length=50,
     )
 
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(
+        Product,
+        related_name='license_types',
+        on_delete=models.CASCADE
+    )
 
     def __str__(self):
         return f"{self.product.name} - {self.name}"

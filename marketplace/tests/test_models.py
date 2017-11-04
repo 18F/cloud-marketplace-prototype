@@ -33,6 +33,11 @@ def test_purchase_factory_works():
 
 
 @pytest.mark.django_db
+def test_license_request_factory_works():
+    req = LicenseRequestFactory.create()
+
+
+@pytest.mark.django_db
 def test_is_approved_for_user_works():
     user = UserFactory.create()
     team = TeamFactory.create()

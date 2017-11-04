@@ -158,3 +158,16 @@ class PurchaseFactory(Factory):
     end_date = factory.LazyAttribute(
         lambda a: a.start_date + datetime.timedelta(days=365),
     )
+
+
+class LicenseRequestFactory(Factory):
+    class Meta:
+        model = models.LicenseRequest
+
+    user = factory.SubFactory(UserFactory)
+
+    license_type = factory.SubFactory(LicenseTypeFactory)
+
+    status = models.LicenseRequest.REQUESTED
+
+    is_self_reported = False

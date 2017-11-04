@@ -73,6 +73,17 @@ class LicenseType(models.Model):
         on_delete=models.CASCADE
     )
 
+    def get_availability_for_team(self, team):
+        # Urg, beware of double-counting: e.g. if a user is a
+        # member of teams A and B, and A has one free license
+        # and B has one free license, which pool does the
+        # user draw from?
+        #
+        # One possibility is to add a 'team' field to the
+        # LicenseRequest class, which specifies the pool to
+        # draw from.
+        raise NotImplementedError('TODO: Finish this!')
+
     def __str__(self):
         return f"{self.product.name} - {self.name}"
 

@@ -19,14 +19,17 @@ def test_license_type_str():
     assert str(lt) == 'Trello - Enterprise'
 
 
-# TODO: We can probably delete this test eventually, right now
-# I just want to make sure the factory I've added actually works.
 @pytest.mark.django_db
 def test_license_type_factory_works():
     lt = LicenseTypeFactory.create()
     assert lt.name
     assert lt.product.name
     assert list(lt.product.license_types.all()) == [lt]
+
+
+@pytest.mark.django_db
+def test_purchase_factory_works():
+    purchase = PurchaseFactory.create()
 
 
 @pytest.mark.django_db

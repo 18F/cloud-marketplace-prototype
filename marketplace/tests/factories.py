@@ -1,3 +1,4 @@
+import datetime
 import factory
 from factory.django import DjangoModelFactory as Factory
 from django.contrib.auth.models import User
@@ -142,3 +143,18 @@ class LicenseTypeFactory(Factory):
     name = factory.Faker('catch_phrase')
 
     product = factory.SubFactory(ProductFactory)
+
+
+class PurchaseFactory(Factory):
+    class Meta:
+        model = models.Purchase
+
+    license_type = factory.SubFactory(LicenseTypeFactory)
+
+    license_count = 50
+
+    start_date = factory.LazyFunction(datetime.datetime.now)
+
+    end_date = factory.LazyAttribute(
+        lambda a: a.start_date + datetime.timedelta(days=365),
+    )

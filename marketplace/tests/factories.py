@@ -1,6 +1,7 @@
 import factory
 from factory.django import DjangoModelFactory as Factory
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 
 from marketplace import models
 
@@ -102,3 +103,24 @@ class ZoomFactory(BaseProductFactory):
         screen sharing, and session recording. No account is required
         to participate in conferences.
     """
+
+
+class ProductFactory(BaseProductFactory):
+    name = factory.Faker('company')
+
+    slug = factory.LazyAttribute(
+        lambda a: slugify(a.name)
+    )
+
+    category = factory.Faker('catch_phrase')
+
+    description = factory.Faker('paragraph')
+
+
+class LicenseTypeFactory(Factory):
+    class Meta:
+        model = models.LicenseType
+
+    name = factory.Faker('catch_phrase')
+
+    product = factory.SubFactory(ProductFactory)

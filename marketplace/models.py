@@ -102,27 +102,33 @@ class LicenseRequest(models.Model):
     Represents a request that a user has made for a product license.
     """
 
+    REQUESTED = 'requested'
+    GRANTED = 'granted'
+    DENIED = 'denied'
+    WAITLISTED = 'waitlisted'
+    RELINQUISHED = 'relinquished'
+
     STATUS_CHOICES = [
         # A user has requested a license for the product. The request
         # now needs to be addressed by an administrator or staff member.
-        ('requested', 'Requested'),
+        (REQUESTED, 'Requested'),
 
         # The user was granted a license for the product.
-        ('granted', 'Granted'),
+        (GRANTED, 'Granted'),
 
         # The user was denied a license for the product,
         # because they do not meet some qualification
         # for having one.
-        ('denied', 'Denied'),
+        (DENIED, 'Denied'),
 
         # The user has been wait-listed for a license for
         # the product and will be given one as soon as
         # one is available.
-        ('waitlisted', 'Wait-listed'),
+        (WAITLISTED, 'Wait-listed'),
 
         # The user once had a license for the product,
         # but no longer has it.
-        ('relinquished', 'Relinquished'),
+        (RELINQUISHED, 'Relinquished'),
     ]
 
     created_at = models.DateTimeField(auto_now_add=True)

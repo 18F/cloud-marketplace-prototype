@@ -24,11 +24,14 @@ class UserFactory(Factory):
     is_active = True
 
 
+job = factory.Faker('job')
+
+
 def simple_job():
-    job = factory.Faker('job').generate({})
+    j = job.generate({})
     # Some jobs are like "Nurse, adult"; we don't want the part
     # after the comma.
-    return job.split(',')[0]
+    return j.split(',')[0]
 
 
 class TeamFactory(Factory):

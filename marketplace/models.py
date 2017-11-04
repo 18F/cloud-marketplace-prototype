@@ -13,7 +13,7 @@ class Team(models.Model):
 
     name = models.CharField(max_length=100)
 
-    users = models.ManyToManyField(User)
+    users = models.ManyToManyField(User, related_name='teams')
 
     def __str__(self):
         return self.name
@@ -33,6 +33,11 @@ class Product(models.Model):
     description = models.TextField()
 
     teams_approved_for = models.ManyToManyField(Team)
+
+    def is_approved_for_user(self, user):
+        user_teams = user.teams.all()
+        my_teams = self.teams_approved_for.all()
+        return my_teams.intersection(user_teams).exists()
 
     @property
     def icon(self):

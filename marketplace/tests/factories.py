@@ -117,6 +117,15 @@ class ProductFactory(BaseProductFactory):
     description = factory.Faker('paragraph')
 
     @factory.post_generation
+    def teams_approved_for(self, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if extracted:
+            for team in extracted:
+                self.teams_approved_for.add(team)
+
+    @factory.post_generation
     def licenses(self, create, extracted, **kwargs):
         if not create:
             return

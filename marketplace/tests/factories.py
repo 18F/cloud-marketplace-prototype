@@ -3,6 +3,7 @@ import factory
 from factory.django import DjangoModelFactory as Factory
 from django.contrib.auth.models import User
 from django.utils.text import slugify
+from django.utils import timezone
 
 from marketplace import models
 
@@ -153,11 +154,13 @@ class PurchaseFactory(Factory):
 
     license_count = 50
 
-    start_date = factory.LazyFunction(datetime.datetime.now)
+    start_date = factory.LazyFunction(timezone.now)
 
     end_date = factory.LazyAttribute(
         lambda a: a.start_date + datetime.timedelta(days=365),
     )
+
+    team = factory.SubFactory(TeamFactory)
 
 
 class LicenseRequestFactory(Factory):

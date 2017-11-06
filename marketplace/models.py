@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import reverse
+from django.utils import timezone
 
 
 class Team(models.Model):
@@ -74,15 +75,19 @@ class LicenseType(models.Model):
     )
 
     def get_availability_for_team(self, team):
-        # Urg, beware of double-counting: e.g. if a user is a
-        # member of teams A and B, and A has one free license
-        # and B has one free license, which pool does the
-        # user draw from?
-        #
-        # One possibility is to add a 'team' field to the
-        # LicenseRequest class, which specifies the pool to
-        # draw from.
-        raise NotImplementedError('TODO: Finish this!')
+        now = timezone.now()
+        total_licenses = Purchase.objects.filter(
+            license_type=self,
+            team=team,
+            start_date__lte=now,
+            end_date__gt=now,
+        ).aggregate(models.Sum('license_count'))['license_count__sum']
+        busy_licenses = LicenseRequest.objects.filter(
+            license_type=self,
+            team=team,
+            status=LicenseRequest.GRANTED,
+        ).count()
+        return total_licenses - busy_licenses
 
     def __str__(self):
         return f"{self.product.name} - {self.name}"
@@ -110,7 +115,7 @@ class Purchase(models.Model):
 
     end_date = models.DateField()
 
-    teams = models.ManyToManyField(Team)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
 
 
 class LicenseRequest(models.Model):
@@ -152,6 +157,14 @@ class LicenseRequest(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    team = models.ForeignKey(
+        Team,
+        on_delete=models.CASCADE,
+        null=True,
+        help_text=("The team whose license pool is drawn from. Must be "
+                   "a team that the user is a member of."),
+    )
 
     license_type = models.ForeignKey(LicenseType, on_delete=models.CASCADE)
 

@@ -1,5 +1,6 @@
 import pytest
 
+from marketplace import models
 from .factories import *
 
 
@@ -47,3 +48,27 @@ def test_is_approved_for_user_works():
     team.users.add(user)
     team.save()
     assert product.is_approved_for_user(user) is True
+
+
+@pytest.mark.django_db
+def test_get_availability_for_team_works():
+    lt = LicenseTypeFactory.create()
+    purchase = PurchaseFactory.create(
+        license_type=lt,
+        license_count=5,
+    )
+
+    assert lt.get_availability_for_team(purchase.team) == 5
+
+    user = UserFactory.create()
+    user.teams.add(purchase.team)
+    user.save()
+
+    req = LicenseRequestFactory.create(
+        license_type=lt,
+        user=user,
+        team=purchase.team,
+        status=models.LicenseRequest.GRANTED,
+    )
+
+    assert lt.get_availability_for_team(purchase.team) == 4

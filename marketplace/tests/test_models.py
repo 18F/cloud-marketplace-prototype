@@ -1,4 +1,5 @@
 import pytest
+from django.core.exceptions import ValidationError
 
 from marketplace import models
 from .factories import *
@@ -48,6 +49,15 @@ def test_is_approved_for_user_works():
     team.users.add(user)
     team.save()
     assert product.is_approved_for_user(user) is True
+
+
+def test_granted_license_requests_must_have_team_set():
+    req = LicenseRequestFactory.build()
+    req.clean()
+    req.status = req.GRANTED
+    with pytest.raises(ValidationError,
+                       match=r'Granted licenses must have a team set'):
+        req.clean()
 
 
 @pytest.mark.django_db

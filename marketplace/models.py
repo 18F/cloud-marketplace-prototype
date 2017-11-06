@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import reverse
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 
 class Team(models.Model):
@@ -179,3 +180,7 @@ class LicenseRequest(models.Model):
         help_text=("The user has self-reported that they have "
                    "a license for this product."),
     )
+
+    def clean(self):
+        if self.status == self.GRANTED and self.team is None:
+            raise ValidationError('Granted licenses must have a team set.')

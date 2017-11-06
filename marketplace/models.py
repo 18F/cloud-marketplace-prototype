@@ -1,3 +1,4 @@
+from collections import namedtuple
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.staticfiles.storage import staticfiles_storage
@@ -59,6 +60,13 @@ class Product(models.Model):
         return self.name
 
 
+LicenseStats = namedtuple('LicenseStats', [
+    'purchased',
+    'used',
+    'available',
+])
+
+
 class LicenseType(models.Model):
     """
     Represents a type of license for a product, e.g.
@@ -75,20 +83,20 @@ class LicenseType(models.Model):
         on_delete=models.CASCADE
     )
 
-    def get_availability_for_team(self, team):
+    def get_stats_for_team(self, team):
         now = timezone.now()
-        total_licenses = Purchase.objects.filter(
+        purchased = Purchase.objects.filter(
             license_type=self,
             team=team,
             start_date__lte=now,
             end_date__gt=now,
         ).aggregate(models.Sum('license_count'))['license_count__sum']
-        busy_licenses = LicenseRequest.objects.filter(
+        used = LicenseRequest.objects.filter(
             license_type=self,
             team=team,
             status=LicenseRequest.GRANTED,
         ).count()
-        return total_licenses - busy_licenses
+        return LicenseStats(purchased, used, purchased - used)
 
     def __str__(self):
         return f"{self.product.name} - {self.name}"

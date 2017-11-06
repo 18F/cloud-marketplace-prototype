@@ -61,14 +61,17 @@ def test_granted_license_requests_must_have_team_set():
 
 
 @pytest.mark.django_db
-def test_get_availability_for_team_works():
+def test_get_license_stats_for_team_works():
     lt = LicenseTypeFactory.create()
     purchase = PurchaseFactory.create(
         license_type=lt,
         license_count=5,
     )
 
-    assert lt.get_availability_for_team(purchase.team) == 5
+    stats = lt.get_stats_for_team(purchase.team)
+    assert stats.purchased == 5
+    assert stats.used == 0
+    assert stats.available == 5
 
     user = UserFactory.create()
     user.teams.add(purchase.team)
@@ -81,4 +84,7 @@ def test_get_availability_for_team_works():
         status=models.LicenseRequest.GRANTED,
     )
 
-    assert lt.get_availability_for_team(purchase.team) == 4
+    stats = lt.get_stats_for_team(purchase.team)
+    assert stats.purchased == 5
+    assert stats.used == 1
+    assert stats.available == 4

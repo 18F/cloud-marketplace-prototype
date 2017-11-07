@@ -74,7 +74,7 @@ class LicenseType(models.Model):
     """
 
     name = models.CharField(
-        max_length=50,
+        max_length=100,
     )
 
     product = models.ForeignKey(
@@ -124,7 +124,8 @@ class Purchase(models.Model):
 
     end_date = models.DateField()
 
-    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, related_name='purchases',
+                             on_delete=models.CASCADE)
 
 
 class LicenseRequest(models.Model):

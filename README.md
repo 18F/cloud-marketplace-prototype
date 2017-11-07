@@ -9,14 +9,7 @@ cp .env.sample .env
 ln -sf docker-compose.local.yml docker-compose.override.yml
 ./docker-update.sh
 
-docker-compose run app python manage.py create_initial_products
-```
-
-You may also want to create a superuser so you can access
-administrative functionality on the site:
-
-```
-docker-compose run app python manage.py createsuperuser
+docker-compose run app python manage.py seeddb
 ```
 
 Then start everything up:
@@ -26,6 +19,9 @@ docker-compose up
 ```
 
 You can now visit the site at http://localhost:8000/.
+
+You can log in as `admin@gsa.gov` to access the site's 
+administrative functionality.
 
 ## Accessing the main app container
 
@@ -55,6 +51,15 @@ docker-compose run app pytest
 needed, so you can just run it with `python manage.py` on your Docker host.
 However, if you run into problems, you can use
 `docker-compose run app manage.py` instead.
+
+## Resetting the database
+
+You can wipe the database and re-populate it with development
+data using the following command:
+
+```
+docker-compose run app python manage.py seeddb --reset
+```
 
 ## Updating the containers
 

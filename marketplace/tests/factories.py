@@ -1,5 +1,6 @@
 import datetime
 import factory
+import random
 from factory.django import DjangoModelFactory as Factory
 from django.contrib.auth.models import User
 from django.utils.text import slugify
@@ -137,11 +138,37 @@ class ProductFactory(BaseProductFactory):
     description = factory.Faker('paragraph')
 
 
+def license_type_name():
+    NOUNS = [
+        'Free',
+        'Personal',
+        'Economy',
+        'Pro',
+        'Professional',
+        'Enterprise',
+        'Premium',
+        'Ultimate',
+    ]
+
+    MODIFIERS = [
+        'Basically ',
+        'Simply ',
+        'Ultra-',
+        'Super-',
+        'Ludicrously ',
+        'Ridiculously ',
+        'Ostentatiously ',
+        'Alarmingly ',
+    ]
+
+    return random.choice(MODIFIERS) + random.choice(NOUNS)
+
+
 class LicenseTypeFactory(Factory):
     class Meta:
         model = models.LicenseType
 
-    name = factory.Faker('catch_phrase')
+    name = factory.LazyFunction(license_type_name)
 
     product = factory.SubFactory(ProductFactory)
 

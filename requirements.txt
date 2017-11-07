@@ -6,6 +6,7 @@ gunicorn==19.6.0
 psycopg2==2.6.2
 Jinja2==2.9.6
 whitenoise==3.3.1
+django-extensions==1.9.7
 django-reversion==2.0.10
 
 # https://github.com/18F/cg-django-uaa/pull/42

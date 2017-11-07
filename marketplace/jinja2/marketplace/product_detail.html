@@ -5,14 +5,43 @@
 {% block main_content %}
   <section class="usa-grid usa-section">
     <div class="usa-grid" style="padding-bottom: 2em">
-      <div class="usa-width-one-third">
+      <div class="usa-width-one-fourth">
         <p><img src="{{ product.icon }}" alt="" width="64" height="64"></p>
       </div>
-      <div class="usa-width-two-thirds">
+      <div class="usa-width-one-half">
         <h2>{{ product.name }}</h2>
         <p style="color: gray">{{ product.category }}</p>
         <p>{{ product.description }}</p>
         <p><img src="{{ product.primary_screenshot }}" alt=""></p>
+      </div>
+      <div class="usa-width-one-fourth">
+      {% if request.user.is_authenticated %}
+        {% if product.is_approved_for_user(request.user) %}
+          <p>You are approved to purchase this product.</p>
+        {% else %}
+          <p>You are not approved to purchase this product.</p>
+        {% endif %}
+        {% for lt in product.license_types.all() %}
+          <h3>{{ lt.name }}</h3>
+          {% set lr = lt.request_from_user(request.user) %}
+          {% if lr == None %}
+            {# TODO: Check to see if this product is in stock first. #}
+            <button class="usa-button">Buy now</button>
+          {% elif lr.status == LicenseRequest.REQUESTED %}
+            <p>You have requested this type of license.</p>
+          {% elif lr.status == LicenseRequest.GRANTED %}
+            <p>You already have a license.</p>
+          {% elif lr.status == LicenseRequest.DENIED %}
+            <p>You requested this license, but were denied.</p>
+          {% elif lr.status == LicenseRequest.WAITLISTED %}
+            <p>You are on a wait-list for this license.</p>
+          {% elif lr.status == LicenseRequest.RELINQUISHED %}
+            <p>You had this license, but relinquished it.</p>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        <p>Log in to purchase this product.</p>
+      {% endif %}
       </div>
     </div>
   </section>

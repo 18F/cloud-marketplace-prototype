@@ -13,6 +13,7 @@ def test_seeddb_works():
     assert 'object at 0x' not in output
     assert 'Created license type' in output
     assert 'Created team' in output
+    assert re.search(r'Approving ".*" for use by team ".*"', output)
     assert 'Created a purchase of' in output
     assert re.search(r'Added ".*" to team ".*"', output)
     assert 'Created a license request' in output

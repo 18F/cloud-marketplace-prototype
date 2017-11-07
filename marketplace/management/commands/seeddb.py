@@ -72,11 +72,16 @@ def create_teams(stdout, count=3, team_size=5):
 def create_purchases(license_types, teams, stdout, license_count=2):
     purchases = []
     for lt in license_types:
+        team = random.choice(teams)
         p = factories.PurchaseFactory.create(
             license_count=license_count,
             license_type=lt,
-            team=random.choice(teams),
+            team=team,
         )
+        product = lt.product
+        if not product.teams_approved_for.filter(pk=team.pk).exists():
+            stdout.write(f'Approving "{product}" for use by team "{team}".')
+            product.teams_approved_for.add(team)
         stdout.write(
             f'Created a purchase of {p.license_count} licenses of '
             f'"{p.license_type}" for team "{p.team}".'

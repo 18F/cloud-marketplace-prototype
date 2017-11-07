@@ -9,7 +9,7 @@ cp .env.sample .env
 ln -sf docker-compose.local.yml docker-compose.override.yml
 ./docker-update.sh
 
-docker-compose run app python manage.py create_initial_products
+docker-compose run app python manage.py seeddb
 ```
 
 You may also want to create a superuser so you can access

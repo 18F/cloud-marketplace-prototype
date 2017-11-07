@@ -1,6 +1,7 @@
 import random
 from django.core.management.base import BaseCommand, CommandError
 from django.core.management import call_command
+from django.contrib.auth.models import User
 
 from marketplace.models import Product, LicenseRequest
 from marketplace.tests import factories
@@ -11,6 +12,21 @@ PRODUCTS = [
     factories.TrelloFactory.build(),
     factories.ZoomFactory.build(),
 ]
+
+
+def create_admin_user(stdout, email='admin@gsa.gov'):
+    user = User.objects.filter(email=email).first()
+    if user:
+        stdout.write(f'Ensuring {email} is a superuser.')
+    if not user:
+        stdout.write(f'Creating superuser {email}.')
+        user = factories.UserFactory.build(
+            username=email,
+            email=email,
+        )
+    user.is_staff = True
+    user.is_superuser = True
+    user.save()
 
 
 def create_products(products, stdout):
@@ -119,3 +135,4 @@ class Command(BaseCommand):
         teams, users = create_teams(self.stdout)
         purchases = create_purchases(lts, teams, self.stdout)
         create_license_requests(users, purchases, self.stdout)
+        create_admin_user(self.stdout)

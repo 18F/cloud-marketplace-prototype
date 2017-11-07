@@ -18,7 +18,10 @@ def test_seeddb_works():
     assert 'Created a license request' in output
     assert 'with status "granted"' in output
     assert 'with status "waitlisted"' in output
+    assert 'Creating superuser' in output
 
     out = StringIO()
     call_command('seeddb', stdout=out)
-    assert 'Favro already exists.' in out.getvalue()
+    output = out.getvalue()
+    assert 'Favro already exists.' in output
+    assert 'Ensuring admin@gsa.gov is a superuser' in output

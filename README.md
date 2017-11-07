@@ -12,13 +12,6 @@ ln -sf docker-compose.local.yml docker-compose.override.yml
 docker-compose run app python manage.py seeddb
 ```
 
-You may also want to create a superuser so you can access
-administrative functionality on the site:
-
-```
-docker-compose run app python manage.py createsuperuser
-```
-
 Then start everything up:
 
 ```
@@ -26,6 +19,9 @@ docker-compose up
 ```
 
 You can now visit the site at http://localhost:8000/.
+
+You can log in as `admin@gsa.gov` to access the site's 
+administrative functionality.
 
 ## Accessing the main app container
 

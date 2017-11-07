@@ -62,7 +62,7 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'django_extensions',
-    'marketplace',
+    'marketplace.apps.MarketplaceConfig',
     'uaa_client',
 ]
 

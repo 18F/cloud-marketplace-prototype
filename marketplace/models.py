@@ -22,6 +22,18 @@ class Team(models.Model):
         return self.name
 
 
+class UserMarketplaceInfo(models.Model):
+    """
+    This model stores all marketplace-related information
+    for a particular user.
+    """
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE,
+                                related_name='marketplace')
+
+    team = models.ForeignKey(Team, null=True, on_delete=models.CASCADE)
+
+
 class Product(models.Model):
     """
     Represents a software product in the marketplace.

@@ -1,3 +1,4 @@
+import re
 from io import StringIO
 import pytest
 from django.core.management import call_command
@@ -7,7 +8,16 @@ from django.core.management import call_command
 def test_seeddb_works():
     out = StringIO()
     call_command('seeddb', stdout=out)
-    assert 'Created Favro.' in out.getvalue()
+    output = out.getvalue()
+    assert 'Created Favro.' in output
+    assert 'object at 0x' not in output
+    assert 'Created license type' in output
+    assert 'Created team' in output
+    assert 'Created a purchase of' in output
+    assert re.search(r'Added ".*" to team ".*"', output)
+    assert 'Created a license request' in output
+    assert 'with status "granted"' in output
+    assert 'with status "waitlisted"' in output
 
     out = StringIO()
     call_command('seeddb', stdout=out)

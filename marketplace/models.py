@@ -42,6 +42,15 @@ class Product(models.Model):
         my_teams = self.teams_approved_for.all()
         return my_teams.intersection(user_teams).exists()
 
+    def get_stats_for_team(self, team):
+        stats = LicenseStats(0, 0, 0)
+        for license_type in self.license_types.all():
+            lt_stats = license_type.get_stats_for_team(team)
+            stats = LicenseStats(*[
+                sum(x) for x in zip(stats, lt_stats)
+            ])
+        return stats
+
     @property
     def icon(self):
         return staticfiles_storage.url(
@@ -90,7 +99,7 @@ class LicenseType(models.Model):
             team=team,
             start_date__lte=now,
             end_date__gt=now,
-        ).aggregate(models.Sum('license_count'))['license_count__sum']
+        ).aggregate(models.Sum('license_count'))['license_count__sum'] or 0
         used = LicenseRequest.objects.filter(
             license_type=self,
             team=team,

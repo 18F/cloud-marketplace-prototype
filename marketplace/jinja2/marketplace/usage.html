@@ -1,0 +1,33 @@
+{% extends "marketplace/base.html" %}
+
+{% block title %}Usage{% endblock %}
+
+{% block simple_content %}
+  <h2>Usage</h2>
+  {% for product in Product.objects.all() %}
+    <h3><img src="{{ product.icon }}" alt="" width="64" height="64" style="float: left; margin-right: 1em"> {{ product.name }}</h3>
+    <a href="{{ product.detail_url }}">Product details &rsaquo;</a>
+    <br>
+    <table class="usa-table-borderless">
+      <thead>
+        <tr>
+          <th>Team</th>
+          <th>Licenses purchased</th>
+          <th>Licenses used</th>
+          <th>Licenses available</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for team in product.teams_approved_for.all() %}
+        {% set stats = product.get_stats_for_team(team) %}
+        <tr>
+          <td>{{ team.name }}</td>
+          <td>{{ stats.purchased }}</td>
+          <td>{{ stats.used }}</td>
+          <td>{{ stats.available }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endfor %}
+{% endblock %}

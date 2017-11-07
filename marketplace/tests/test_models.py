@@ -63,28 +63,49 @@ def test_granted_license_requests_must_have_team_set():
 @pytest.mark.django_db
 def test_get_license_stats_for_team_works():
     lt = LicenseTypeFactory.create()
+    team = TeamFactory.create()
+
+    stats = lt.get_stats_for_team(team)
+    assert stats.purchased == 0
+    assert stats.used == 0
+    assert stats.available == 0
+
     purchase = PurchaseFactory.create(
         license_type=lt,
         license_count=5,
+        team=team,
     )
 
-    stats = lt.get_stats_for_team(purchase.team)
+    stats = lt.get_stats_for_team(team)
     assert stats.purchased == 5
     assert stats.used == 0
     assert stats.available == 5
 
     user = UserFactory.create()
-    user.teams.add(purchase.team)
+    user.teams.add(team)
     user.save()
 
     req = LicenseRequestFactory.create(
         license_type=lt,
         user=user,
-        team=purchase.team,
+        team=team,
         status=models.LicenseRequest.GRANTED,
     )
 
-    stats = lt.get_stats_for_team(purchase.team)
+    stats = lt.get_stats_for_team(team)
     assert stats.purchased == 5
     assert stats.used == 1
     assert stats.available == 4
+
+
+@pytest.mark.django_db
+def test_get_license_stats_for_team_by_product_works():
+    lt1 = LicenseTypeFactory.create()
+    lt2 = LicenseTypeFactory.create(product=lt1.product)
+
+    p1 = PurchaseFactory.create(license_type=lt1, license_count=5)
+    p2 = PurchaseFactory.create(license_type=lt2, team=p1.team,
+                                license_count=30)
+
+    stats = lt1.product.get_stats_for_team(p1.team)
+    assert stats.purchased == 35

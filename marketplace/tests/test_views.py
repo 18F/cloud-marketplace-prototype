@@ -39,3 +39,17 @@ def test_logout_works(client):
     response = client.get('/logout')
     assert response.status_code == 200
     assert b'foo.bar@gsa.gov' not in response.content
+
+
+@pytest.mark.django_db
+def test_usage_works(client):
+    team = factories.TeamFactory.create(name="Awesome Team")
+    product = factories.TrelloFactory.create(teams_approved_for=[team])
+    lt = factories.LicenseTypeFactory.create(product=product)
+
+    response = client.get('/usage')
+    html = response.content.decode('utf-8')
+
+    assert response.status_code == 200
+    assert 'Trello' in html
+    assert 'Awesome Team' in html

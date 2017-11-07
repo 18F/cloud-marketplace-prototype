@@ -13,3 +13,6 @@ def product_detail(request, product):
     return render(request, 'marketplace/product_detail.html', {
         'product': product,
     })
+
+def usage(request):
+    return render(request, 'marketplace/usage.html')

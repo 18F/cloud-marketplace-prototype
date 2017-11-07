@@ -56,6 +56,15 @@ needed, so you can just run it with `python manage.py` on your Docker host.
 However, if you run into problems, you can use
 `docker-compose run app manage.py` instead.
 
+## Resetting the database
+
+You can wipe the database and re-populate it with development
+data using the following command:
+
+```
+docker-compose run app python manage.py seeddb --reset
+```
+
 ## Updating the containers
 
 Whenever you update your repository via e.g. `git pull` or

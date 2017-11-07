@@ -182,6 +182,11 @@ def wait_for_db(max_attempts=15, seconds_between_attempts=1):
     while True:
         try:
             connection.ensure_connection()
+
+            # This is required particularly for commands that
+            # require exclusive access to the db, like
+            # django-extensions' "reset_db".
+            connection.close()
             break
         except OperationalError as e:
             if attempts >= max_attempts:

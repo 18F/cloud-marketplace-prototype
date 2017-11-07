@@ -1,5 +1,7 @@
 import random
 from django.core.management.base import BaseCommand, CommandError
+from django.core.management import call_command
+
 from marketplace.models import Product, LicenseRequest
 from marketplace.tests import factories
 
@@ -99,7 +101,19 @@ def create_license_requests(users, purchases, stdout, min_waitlisted=1):
 class Command(BaseCommand):
     help = 'Seeds the marketplace with initial development data'
 
+    def add_arguments(self, parser):
+        super().add_arguments(parser)
+        parser.add_argument(
+            '--reset', action='store_true', dest='full_reset',
+            default=False,
+            help='Destroy everything currently in the database first.',
+        )
+
     def handle(self, *args, **options):
+        if options.get('full_reset'):
+            call_command('reset_db')
+            call_command('migrate')
+
         products = create_products(PRODUCTS, self.stdout)
         lts = create_license_types(products, self.stdout)
         teams, users = create_teams(self.stdout)

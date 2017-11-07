@@ -6,7 +6,7 @@ from .models import (Product, Team, LicenseType, Purchase,
 
 @admin.register(Purchase)
 class PurchaseAdmin(admin.ModelAdmin):
-    list_display = ('license_type', 'license_count', 'start_date',
+    list_display = ('license_type', 'team', 'license_count', 'start_date',
                     'end_date')
 
 

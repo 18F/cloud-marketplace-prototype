@@ -1,7 +1,22 @@
 from django.contrib import admin
+from django.contrib.auth.models import User
+from django.contrib.auth.admin import UserAdmin
 
 from .models import (Product, Team, LicenseType, Purchase,
-                     LicenseRequest)
+                     LicenseRequest, UserMarketplaceInfo)
+
+class MarketplaceInfoInline(admin.StackedInline):
+    verbose_name_plural = 'Marketplace Info'
+    model = UserMarketplaceInfo
+    can_delete = False
+
+
+class MarketplaceUserAdmin(UserAdmin):
+    inlines = (MarketplaceInfoInline,)
+
+
+admin.site.unregister(User)
+admin.site.register(User, MarketplaceUserAdmin)
 
 
 @admin.register(Purchase)

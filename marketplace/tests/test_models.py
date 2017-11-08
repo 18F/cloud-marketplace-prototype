@@ -22,6 +22,12 @@ def test_license_type_str():
 
 
 @pytest.mark.django_db
+def test_marketplace_info_str():
+    user = UserFactory.create(email='a@b.com')
+    assert str(user.marketplace) == 'Marketplace info for a@b.com'
+
+
+@pytest.mark.django_db
 def test_license_type_factory_works():
     lt = LicenseTypeFactory.create()
     assert lt.name

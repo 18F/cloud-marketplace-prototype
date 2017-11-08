@@ -32,6 +32,9 @@ class UserMarketplaceInfo(models.Model):
     team = models.ForeignKey(Team, null=True, on_delete=models.CASCADE,
                              related_name='users')
 
+    def __str__(self):
+        return f"Marketplace info for {self.user.email}"
+
 
 class Product(models.Model):
     """

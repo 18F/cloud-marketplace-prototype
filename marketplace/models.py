@@ -123,6 +123,12 @@ class LicenseType(models.Model):
         ).count()
         return LicenseStats(purchased, used, purchased - used)
 
+    def request_from_user(self, user):
+        return LicenseRequest.objects.filter(
+            license_type=self,
+            user=user
+        ).first()
+
     def __str__(self):
         return f"{self.product.name} - {self.name}"
 

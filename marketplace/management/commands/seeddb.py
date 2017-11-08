@@ -62,9 +62,9 @@ def create_teams(stdout, count=3, team_size=5):
         stdout.write(f'Created team "{team}".')
         members = factories.UserFactory.create_batch(team_size)
         users.extend(members)
-        team.users.set(members)
-        team.save()
         for member in members:
+            member.marketplace.team = team
+            member.marketplace.save()
             stdout.write(f'Added "{member.email}" to team "{team}".')
     return (teams, users)
 
@@ -94,7 +94,8 @@ def create_license_requests(users, purchases, stdout, min_waitlisted=1):
     waitlisted = 0
     while waitlisted < min_waitlisted:
         for user in users:
-            team = user.teams.all().order_by('?').first()
+            team = user.marketplace.team
+            assert team is not None
             purchase = team.purchases.all().order_by('?').first()
             status = random.choice([
                 LicenseRequest.REQUESTED,
@@ -108,7 +109,6 @@ def create_license_requests(users, purchases, stdout, min_waitlisted=1):
                 status = LicenseRequest.WAITLISTED
                 waitlisted += 1
             req = factories.LicenseRequestFactory.create(
-                team=team,
                 user=user,
                 license_type=lt,
                 status=status,

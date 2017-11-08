@@ -16,8 +16,6 @@ class Team(models.Model):
 
     name = models.CharField(max_length=100)
 
-    users = models.ManyToManyField(User, related_name='teams')
-
     def __str__(self):
         return self.name
 
@@ -31,7 +29,8 @@ class UserMarketplaceInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,
                                 related_name='marketplace')
 
-    team = models.ForeignKey(Team, null=True, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, null=True, on_delete=models.CASCADE,
+                             related_name='users')
 
 
 class Product(models.Model):
@@ -50,9 +49,11 @@ class Product(models.Model):
     teams_approved_for = models.ManyToManyField(Team)
 
     def is_approved_for_user(self, user):
-        user_teams = user.teams.all()
-        my_teams = self.teams_approved_for.all()
-        return my_teams.intersection(user_teams).exists()
+        if user.marketplace.team is None:
+            return False
+        return self.teams_approved_for.filter(
+            pk=user.marketplace.team.pk
+        ).exists()
 
     def get_stats_for_team(self, team):
         stats = LicenseStats(0, 0, 0)
@@ -114,7 +115,7 @@ class LicenseType(models.Model):
         ).aggregate(models.Sum('license_count'))['license_count__sum'] or 0
         used = LicenseRequest.objects.filter(
             license_type=self,
-            team=team,
+            user__marketplace__team=team,
             status=LicenseRequest.GRANTED,
         ).count()
         return LicenseStats(purchased, used, purchased - used)
@@ -189,14 +190,6 @@ class LicenseRequest(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    team = models.ForeignKey(
-        Team,
-        on_delete=models.CASCADE,
-        null=True,
-        help_text=("The team whose license pool is drawn from. Must be "
-                   "a team that the user is a member of."),
-    )
-
     license_type = models.ForeignKey(LicenseType, on_delete=models.CASCADE)
 
     status = models.CharField(
@@ -212,5 +205,6 @@ class LicenseRequest(models.Model):
     )
 
     def clean(self):
-        if self.status == self.GRANTED and self.team is None:
-            raise ValidationError('Granted licenses must have a team set.')
+        if self.status == self.GRANTED and self.user.marketplace.team is None:
+            raise ValidationError('Users of granted licenses must have a '
+                                  'team.')

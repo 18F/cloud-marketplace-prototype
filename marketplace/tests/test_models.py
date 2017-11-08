@@ -46,17 +46,17 @@ def test_is_approved_for_user_works():
     product = ProductFactory.create(teams_approved_for=[team])
     assert product.is_approved_for_user(user) is False
 
-    team.users.add(user)
-    team.save()
+    user.marketplace.team = team
     assert product.is_approved_for_user(user) is True
 
 
-def test_granted_license_requests_must_have_team_set():
-    req = LicenseRequestFactory.build()
+@pytest.mark.django_db
+def test_granted_license_requests_must_have_user_with_team_set():
+    req = LicenseRequestFactory.create()
     req.clean()
     req.status = req.GRANTED
     with pytest.raises(ValidationError,
-                       match=r'Granted licenses must have a team set'):
+                       match=r'Users of granted licenses must have a team.'):
         req.clean()
 
 
@@ -82,13 +82,12 @@ def test_get_license_stats_for_team_works():
     assert stats.available == 5
 
     user = UserFactory.create()
-    user.teams.add(team)
-    user.save()
+    user.marketplace.team = team
+    user.marketplace.save()
 
     req = LicenseRequestFactory.create(
         license_type=lt,
         user=user,
-        team=team,
         status=models.LicenseRequest.GRANTED,
     )
 
